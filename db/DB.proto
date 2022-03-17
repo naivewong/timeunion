@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+// option java_multiple_files = true;
+// option java_package = "db";
+// option java_outer_classname = "DBGprc";
+
+message Tag {
+  bytes name  = 1;
+  bytes value = 2;
+}
+
+message Tags {
+  repeated Tag tags = 1;
+}
+
+message InsertSample {
+  enum InsertType {
+    TS    = 0;
+    GROUP = 1;
+  }
+
+  InsertType type = 1;
+  uint64 id = 2;
+  repeated uint32 slots = 3;
+  Tags lset = 4;
+  repeated Tags lsets = 5;
+  int64 t = 6;
+  repeated double v = 7;
+}
+
+message InsertSamples {
+  repeated InsertSample samples = 1;
+}
+
+message InsertResult {
+  uint64 id = 1;
+  repeated uint32 slots = 2;
+}
+
+message InsertResults {
+  repeated InsertResult results = 1;
+}
+
+message QueryRequest {
+  bool return_metric = 1;
+  Tags lset = 2;
+  int64 mint = 3;
+  int64 maxt =4;
+}
+
+message QuerySample {
+  int64 t = 1;
+  double v = 2;
+}
+
+message QueryGroupSample {
+  Tags metric = 1;
+  repeated QuerySample values = 2;
+}
+
+message QueryResult {
+  Tags metric = 1;
+  uint64 id = 2;
+  repeated QuerySample values = 3;
+  repeated QueryGroupSample series = 4;
+}
+
+message QueryResults {
+  repeated QueryResult results = 1;
+}
+
+// service Client {
+//   rpc Insert(InsertSamples) returns (InsertResults) {}
+//   rpc Query(QueryRequest) returns (QueryResults) {}
+// }
